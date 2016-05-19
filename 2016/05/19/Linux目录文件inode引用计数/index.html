@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Linux,inode,软链接,硬链接," />
 
 
 
@@ -57,16 +57,16 @@
 
 
 
-<meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.">
+<meta name="description" content="说起inode的引用计数，需要先了解一下Linux中的软链接和硬链接。二者的区别随便一搜就出来了，网友们总结的也都很好，这里我就直接借鉴过来了。区别大概如下：">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://yoursite.com/2016/03/20/hello-world/index.html">
+<meta property="og:title" content="Linux目录文件inode引用计数">
+<meta property="og:url" content="http://yoursite.com/2016/05/19/Linux目录文件inode引用计数/index.html">
 <meta property="og:site_name" content="xbzh's blog">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.">
-<meta property="og:updated_time" content="2016-03-20T15:03:59.000Z">
+<meta property="og:description" content="说起inode的引用计数，需要先了解一下Linux中的软链接和硬链接。二者的区别随便一搜就出来了，网友们总结的也都很好，这里我就直接借鉴过来了。区别大概如下：">
+<meta property="og:updated_time" content="2016-05-19T16:11:10.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.">
+<meta name="twitter:title" content="Linux目录文件inode引用计数">
+<meta name="twitter:description" content="说起inode的引用计数，需要先了解一下Linux中的软链接和硬链接。二者的区别随便一搜就出来了，网友们总结的也都很好，这里我就直接借鉴过来了。区别大概如下：">
 
 
 
@@ -84,7 +84,7 @@
   };
 </script>
 
-  <title> Hello World | xbzh's blog </title>
+  <title> Linux目录文件inode引用计数 | xbzh's blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -224,7 +224,7 @@
             
             
               
-                Hello World
+                Linux目录文件inode引用计数
               
             
           </h1>
@@ -236,8 +236,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-03-20T23:03:59+08:00" content="2016-03-20">
-              2016-03-20
+            <time itemprop="dateCreated" datetime="2016-05-19T23:26:05+08:00" content="2016-05-19">
+              2016-05-19
             </time>
           </span>
 
@@ -247,8 +247,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/03/20/hello-world/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/20/hello-world/" itemprop="commentsCount"></span>
+                <a href="/2016/05/19/Linux目录文件inode引用计数/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/19/Linux目录文件inode引用计数/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -270,15 +270,25 @@
       
 
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.<br><a id="more"></a></p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+        <p>说起inode的引用计数，需要先了解一下Linux中的软链接和硬链接。二者的区别随便一搜就出来了，网友们总结的也都很好，这里我就直接借鉴过来了。区别大概如下：<br><a id="more"></a></p>
+<ul>
+<li>软链接拥有自己的inode，其存储了指向的文件的路径，当移动源文件的时候，软链接会失效，删除软链接文件对源文件无影响；硬链接没有自己的inode，其增加的对源文件的inode引用计数。</li>
+<li>软链接可以跨文件系统，且可以对目录进行链接；硬链接不可以。</li>
+<li>软链接甚至可以对不存在的文件进行链接。</li>
+</ul>
+<p>知道了这些之后，我们查看一下文件的inode及其引用计数。</p>
+<blockquote>
+<p>ls -il<br>19516710 -rw-r–r–    1 zhangxianbao  staff  1628  3 20 22:53 _config.yml<br>19527465 -rw-r–r–    1 zhangxianbao  staff   174  5 19 23:26 db.json<br>19480131 drwxr-xr-x  207 zhangxianbao  staff  7038  3 22 23:21 node_modules<br>19559248 -rw-r–r–    1 root          staff   483  3 22 23:21 package.json<br>19527468 drwxr-xr-x   14 zhangxianbao  staff   476  3 21 01:12 public<br>19488375 drwxr-xr-x    5 zhangxianbao  staff   170  3 20 03:36 scaffolds<br>19488377 drwxr-xr-x    7 zhangxianbao  staff   238  3 21 00:44 source<br>19488378 drwxr-xr-x    4 zhangxianbao  staff   136  3 20 22:08 themes</p>
+</blockquote>
+<p>我们看到文件夹的inode引用计数都是大于1的，为什么呢？我们创建一个空的文件夹来看看。</p>
+<blockquote>
+<p>mkdir temp<br>ls -il<br>21264760 drwxr-xr-x    2 zhangxianbao  staff    68  5 19 23:51 temp</p>
+</blockquote>
+<p>空的文件夹引用计数是2。大家都知道空的文件夹其实并不是空的， 其中含有两个隐藏的文件.和..。这两个文件分别指向了本目录和上层目录，都是硬链接。由此可知为什么目录文件的inode引用计数为什么总是大于等2。而且目录文件的引用计数可以如下得到：</p>
+<blockquote>
+<p>m = 2 + n</p>
+</blockquote>
+<p>其中m表示本目录的inode引用计数，n表示该目录下包含的目录的个数。</p>
 
       
     </div>
@@ -291,18 +301,30 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag">#Linux</a>
+          
+            <a href="/tags/inode/" rel="tag">#inode</a>
+          
+            <a href="/tags/软链接/" rel="tag">#软链接</a>
+          
+            <a href="/tags/硬链接/" rel="tag">#硬链接</a>
+          
+        </div>
+      
 
       
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2016/03/21/使用Hexo搭建博客的过程/" rel="next" title="使用Hexo搭建博客的过程">
+                <i class="fa fa-chevron-left"></i> 使用Hexo搭建博客的过程
+              </a>
+            
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/03/21/使用Hexo搭建博客的过程/" rel="prev" title="使用Hexo搭建博客的过程">
-                使用Hexo搭建博客的过程 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -328,8 +350,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/03/20/hello-world/"
-           data-title="Hello World" data-url="http://yoursite.com/2016/03/20/hello-world/">
+      <div class="ds-thread" data-thread-key="2016/05/19/Linux目录文件inode引用计数/"
+           data-title="Linux目录文件inode引用计数" data-url="http://yoursite.com/2016/05/19/Linux目录文件inode引用计数/">
       </div>
     
   </div>
@@ -436,7 +458,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+              <p class="post-toc-empty">此文章未包含目录</p>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Linux,inode,软链接,硬链接," />
+  <meta name="keywords" content="Lua,lua面向对象," />
 
 
 
@@ -57,16 +57,16 @@
 
 
 
-<meta name="description" content="说起inode的引用计数，需要先了解一下Linux中的软链接和硬链接。二者的区别随便一搜就出来了，网友们总结的也都很好，这里我就直接借鉴过来了。区别大概如下：">
+<meta name="description" content="很久之前接触过lua，最近在工作中又用到了一些，对lua这门语言又有了新的认识和理解。现简单记录一下。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux目录文件inode引用计数">
-<meta property="og:url" content="http://yoursite.com/2016/05/19/Linux目录文件inode引用计数/index.html">
+<meta property="og:title" content="Lua table、模块与面向对象">
+<meta property="og:url" content="http://yoursite.com/2016/11/27/Lua-table、模块与面向对象/index.html">
 <meta property="og:site_name" content="xbzh's blog">
-<meta property="og:description" content="说起inode的引用计数，需要先了解一下Linux中的软链接和硬链接。二者的区别随便一搜就出来了，网友们总结的也都很好，这里我就直接借鉴过来了。区别大概如下：">
-<meta property="og:updated_time" content="2016-11-27T15:38:20.000Z">
+<meta property="og:description" content="很久之前接触过lua，最近在工作中又用到了一些，对lua这门语言又有了新的认识和理解。现简单记录一下。">
+<meta property="og:updated_time" content="2016-11-27T15:35:10.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Linux目录文件inode引用计数">
-<meta name="twitter:description" content="说起inode的引用计数，需要先了解一下Linux中的软链接和硬链接。二者的区别随便一搜就出来了，网友们总结的也都很好，这里我就直接借鉴过来了。区别大概如下：">
+<meta name="twitter:title" content="Lua table、模块与面向对象">
+<meta name="twitter:description" content="很久之前接触过lua，最近在工作中又用到了一些，对lua这门语言又有了新的认识和理解。现简单记录一下。">
 
 
 
@@ -84,7 +84,7 @@
   };
 </script>
 
-  <title> Linux目录文件inode引用计数 | xbzh's blog </title>
+  <title> Lua table、模块与面向对象 | xbzh's blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -224,7 +224,7 @@
             
             
               
-                Linux目录文件inode引用计数
+                Lua table、模块与面向对象
               
             
           </h1>
@@ -236,38 +236,19 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-05-19T23:26:05+08:00" content="2016-05-19">
-              2016-05-19
+            <time itemprop="dateCreated" datetime="2016-11-27T23:17:49+08:00" content="2016-11-27">
+              2016-11-27
             </time>
           </span>
 
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index">
-                    <span itemprop="name">Linux</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
           
 
           
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/19/Linux目录文件inode引用计数/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/19/Linux目录文件inode引用计数/" itemprop="commentsCount"></span>
+                <a href="/2016/11/27/Lua-table、模块与面向对象/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/27/Lua-table、模块与面向对象/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -289,25 +270,7 @@
       
 
       
-        <p>说起inode的引用计数，需要先了解一下Linux中的软链接和硬链接。二者的区别随便一搜就出来了，网友们总结的也都很好，这里我就直接借鉴过来了。区别大概如下：<br><a id="more"></a></p>
-<ul>
-<li>软链接拥有自己的inode，其存储了指向的文件的路径，当移动源文件的时候，软链接会失效，删除软链接文件对源文件无影响；硬链接没有自己的inode，其增加的对源文件的inode引用计数。</li>
-<li>软链接可以跨文件系统，且可以对目录进行链接；硬链接不可以。</li>
-<li>软链接甚至可以对不存在的文件进行链接。</li>
-</ul>
-<p>知道了这些之后，我们查看一下文件的inode及其引用计数。</p>
-<blockquote>
-<p>ls -il<br>19516710 -rw-r–r–    1 zhangxianbao  staff  1628  3 20 22:53 _config.yml<br>19527465 -rw-r–r–    1 zhangxianbao  staff   174  5 19 23:26 db.json<br>19480131 drwxr-xr-x  207 zhangxianbao  staff  7038  3 22 23:21 node_modules<br>19559248 -rw-r–r–    1 root          staff   483  3 22 23:21 package.json<br>19527468 drwxr-xr-x   14 zhangxianbao  staff   476  3 21 01:12 public<br>19488375 drwxr-xr-x    5 zhangxianbao  staff   170  3 20 03:36 scaffolds<br>19488377 drwxr-xr-x    7 zhangxianbao  staff   238  3 21 00:44 source<br>19488378 drwxr-xr-x    4 zhangxianbao  staff   136  3 20 22:08 themes</p>
-</blockquote>
-<p>我们看到文件夹的inode引用计数都是大于1的，为什么呢？我们创建一个空的文件夹来看看。</p>
-<blockquote>
-<p>mkdir temp<br>ls -il<br>21264760 drwxr-xr-x    2 zhangxianbao  staff    68  5 19 23:51 temp</p>
-</blockquote>
-<p>空的文件夹引用计数是2。大家都知道空的文件夹其实并不是空的， 其中含有两个隐藏的文件.和..。这两个文件分别指向了本目录和上层目录，都是硬链接。由此可知为什么目录文件的inode引用计数为什么总是大于等2。而且目录文件的引用计数可以如下得到：</p>
-<blockquote>
-<p>m = 2 + n</p>
-</blockquote>
-<p>其中m表示本目录的inode引用计数，n表示该目录下包含的文件的个数。</p>
+        <p>很久之前接触过lua，最近在工作中又用到了一些，对lua这门语言又有了新的认识和理解。现简单记录一下。<br><a id="more"></a><br>Lua是一门很简洁高效的语言,在openresty项目中大量使用，游戏开发中也使用lua来写一些脚本。</p>
 
       
     </div>
@@ -322,13 +285,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Linux/" rel="tag">#Linux</a>
+            <a href="/tags/Lua/" rel="tag">#Lua</a>
           
-            <a href="/tags/inode/" rel="tag">#inode</a>
-          
-            <a href="/tags/软链接/" rel="tag">#软链接</a>
-          
-            <a href="/tags/硬链接/" rel="tag">#硬链接</a>
+            <a href="/tags/lua面向对象/" rel="tag">#lua面向对象</a>
           
         </div>
       
@@ -337,17 +296,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/03/21/使用Hexo搭建博客的过程/" rel="next" title="使用Hexo搭建博客的过程">
-                <i class="fa fa-chevron-left"></i> 使用Hexo搭建博客的过程
+              <a href="/2016/05/19/Linux目录文件inode引用计数/" rel="next" title="Linux目录文件inode引用计数">
+                <i class="fa fa-chevron-left"></i> Linux目录文件inode引用计数
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/11/27/Lua-table、模块与面向对象/" rel="prev" title="Lua table、模块与面向对象">
-                Lua table、模块与面向对象 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -373,8 +328,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/05/19/Linux目录文件inode引用计数/"
-           data-title="Linux目录文件inode引用计数" data-url="http://yoursite.com/2016/05/19/Linux目录文件inode引用计数/">
+      <div class="ds-thread" data-thread-key="2016/11/27/Lua-table、模块与面向对象/"
+           data-title="Lua table、模块与面向对象" data-url="http://yoursite.com/2016/11/27/Lua-table、模块与面向对象/">
       </div>
     
   </div>
